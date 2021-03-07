@@ -117,6 +117,15 @@ def get_predictions(X_star: np.ndarray,
     row should be equal to the prediction p(C_1|X,y,x_star_i) where x_star_i corresponds to the i'th row in X_star
     """
     # TODO
+    S = X_star.shape[0]
+    pred = np.zeros(S)
+    for s in range(S):
+        mu_n = sigmoid(array_samples_theta[s].reshape(-1, 2))
+        pred[s] = mu_n
+    pred /= S
+    pred = pred.reshape(S, 1)
+    return pred
+
 
 
 if __name__ == '__main__':
