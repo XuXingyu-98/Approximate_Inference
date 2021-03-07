@@ -37,7 +37,7 @@ def get_log_upper_proba_distribution(X: np.ndarray,
     print(mu[2])
     for i in range(n):
         prod += y[i] * np.log(mu[i]) + (1 - y[i]) * np.log(1 - mu[i])
-    prod += multivariate_normal.logpdf(theta, mean=0, cov=(sigma_prior**2)*np.eye(2));
+    prod += multivariate_normal.logpdf(theta, mean=np.zeros(2), cov=(sigma_prior**2)*np.eye(2));
     print(prod)
     return prod
 
