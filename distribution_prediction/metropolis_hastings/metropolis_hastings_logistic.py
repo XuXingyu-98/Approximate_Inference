@@ -1,5 +1,5 @@
 import numpy as np
-from scipy.stats import norm
+from scipy.stats import multivariate_normal
 
 
 from distribution_prediction.metropolis_hastings.utils_plots import plot_metropolis_hastings_logistics
@@ -34,7 +34,7 @@ def get_log_upper_proba_distribution(X: np.ndarray,
     for i in range(n):
         mu_n = sigmoid(X[i], theta.reshape(1, -1))
         prod *= mu_n ** y[i] + (1 - mu_n) ** (1 - y[i])
-    prod *= norm.pdf(theta.reshape(2, 1), loc=0, scale=sigma_prior*np.eye(2))
+    prod *= multivariate_normal.pdf(theta.reshape(2, 1), mean=0, cov=(sigma_prior**2)*np.eye(2))
     return np.log(prod)
 
 
