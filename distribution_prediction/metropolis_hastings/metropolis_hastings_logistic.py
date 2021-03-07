@@ -118,12 +118,10 @@ def get_predictions(X_star: np.ndarray,
     """
     # TODO
     S = X_star.shape[0]
-    pred = np.zeros(S)
-    for s in range(S):
-        mu_n = sigmoid(array_samples_theta[s].reshape(-1, 2))
-        pred[s] = mu_n
-    pred /= S
-    pred = pred.reshape(S, 1)
+    mu = sigmoid(X_star, array_samples_theta)
+    print(mu.shape)
+    mu /= S
+    pred = mu.reshape(S, 1)
     return pred
 
 
