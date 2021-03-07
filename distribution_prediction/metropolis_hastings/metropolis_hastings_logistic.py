@@ -36,7 +36,7 @@ def get_log_upper_proba_distribution(X: np.ndarray,
     print(mu[1])
     print(mu[2])
     for i in range(n):
-        prod += y[i] * np.log(mu[i, 1]) + (1 - y[i]) * np.log(1 - mu[i, 1])
+        prod += y[i] * np.log(mu[i]) + (1 - y[i]) * np.log(1 - mu[i])
     print(prod)
     return prod
 
