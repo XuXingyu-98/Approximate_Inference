@@ -121,7 +121,7 @@ def get_predictions(X_star: np.ndarray,
     mu = sigmoid(X_star, array_samples_theta)
     print(mu.shape)
     mu /= S
-    pred = mu.reshape(S, 1)
+    pred = mu.reshape(S,)
     return pred
 
 
