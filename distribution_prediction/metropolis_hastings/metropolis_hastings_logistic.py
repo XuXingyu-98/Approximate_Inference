@@ -32,13 +32,9 @@ def get_log_upper_proba_distribution(X: np.ndarray,
     prod = 0
     n = X.shape[0]
     mu = sigmoid(X, theta.reshape(-1, 2))
-    print(mu.shape)
-    print(mu[1])
-    print(mu[2])
     for i in range(n):
         prod += y[i] * np.log(mu[i]) + (1 - y[i]) * np.log(1 - mu[i])
     prod += multivariate_normal.logpdf(theta, mean=np.zeros(2), cov=(sigma_prior**2)*np.eye(2));
-    print(prod)
     return prod
 
 
@@ -81,12 +77,29 @@ def metropolis_hastings(X: np.ndarray,
     u = np.random.rand()  # Random number used for deciding if newly_sampled_theta should be accepted or not
 
     first_theta = np.zeros(X.shape[1])
+    list_samples.append(first_theta)
 
     # -------------------------------------------------------------------------------------------------
 
     while len(list_samples) < number_expected_samples:
         #########################
         # TODO : Complete Here
+        u = np.random.rand()
+        newly_sampled_theta = np.random.multivariate_normal(mean=first_theta, cov=(sigma_exploration_mh**2)*np.eye(X.shape[1]));
+        q1 = multivariate_normal.pdf(first_theta, mean=newly_sampled_theta, cov=(sigma_exploration_mh**2)*np.eye(X.shape[1]))
+        q2 = multivariate_normal.pdf(newly_sampled_theta, mean=first_theta, cov=(sigma_exploration_mh**2)*np.eye(X.shape[1]))
+        p1 = np.exp(get_log_upper_proba_distribution(X, y, newly_sampled_theta))
+        p2 = np.exp(get_log_upper_proba_distribution(X, y, first_theta))
+        alpha = (q1 * p1) / (q2 * p2)
+
+        if alpha >= u:
+            first_theta = newly_sampled_theta
+            list_samples.append(first_theta)
+            is_sample_accepted = True
+        else:
+            list_samples.append(first_theta)
+            is_sample_accepted = False
+
         #########################
 
         yield is_sample_accepted, np.array(list_samples), newly_sampled_theta, u
