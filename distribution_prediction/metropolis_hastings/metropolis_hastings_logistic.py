@@ -88,8 +88,8 @@ def metropolis_hastings(X: np.ndarray,
         newly_sampled_theta = np.random.multivariate_normal(mean=first_theta, cov=(sigma_exploration_mh**2)*np.eye(X.shape[1]));
         q1 = multivariate_normal.pdf(first_theta, mean=newly_sampled_theta, cov=(sigma_exploration_mh**2)*np.eye(X.shape[1]))
         q2 = multivariate_normal.pdf(newly_sampled_theta, mean=first_theta, cov=(sigma_exploration_mh**2)*np.eye(X.shape[1]))
-        p1 = np.exp(get_log_upper_proba_distribution(X, y, newly_sampled_theta))
-        p2 = np.exp(get_log_upper_proba_distribution(X, y, first_theta))
+        p1 = np.exp(get_log_upper_proba_distribution(X, y, newly_sampled_theta, sigma_prior))
+        p2 = np.exp(get_log_upper_proba_distribution(X, y, first_theta, sigma_prior))
         alpha = (q1 * p1) / (q2 * p2)
 
         if alpha >= u:
@@ -97,7 +97,6 @@ def metropolis_hastings(X: np.ndarray,
             list_samples.append(first_theta)
             is_sample_accepted = True
         else:
-            list_samples.append(first_theta)
             is_sample_accepted = False
 
         #########################
