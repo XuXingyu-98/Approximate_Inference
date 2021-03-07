@@ -1,7 +1,9 @@
 import numpy as np
+from scipy.stats import norm
 
 
 from distribution_prediction.metropolis_hastings.utils_plots import plot_metropolis_hastings_logistics
+from distribution_prediction.utils import sigmoid
 
 
 def get_log_upper_proba_distribution(X: np.ndarray,
@@ -27,6 +29,15 @@ def get_log_upper_proba_distribution(X: np.ndarray,
     :return: log( p_1(theta | X, y) )
     """
     # TODO
+    prod = 1
+    n = X.shape[0]
+    for i in range(n):
+        mu_n = sigmoid(X[i], theta.reshape(1, -1))
+        prod *= mu_n ** y[i] + (1 - mu_n) ** (1 - y[i])
+    prod *= norm.pdf(theta.reshape(1, -1), loc=0, scale=(sigma_prior ** 2) * np.eye(2))
+    return np.log(prod)
+
+
 
 
 def metropolis_hastings(X: np.ndarray,
