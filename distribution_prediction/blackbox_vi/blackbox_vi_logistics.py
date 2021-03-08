@@ -67,12 +67,16 @@ def expected_log_likelihood(mu: np.ndarray,
     S = len(epsilon)
     N = X.shape[0]
     theta = []
+    print("wrong")
 
     for i in range(len(epsilon)):
+        print("wrong2")
         theta_n = mu + A @ epsilon[i].reshape(2, 1)
+        print("wrong3")
         theta.append(theta_n.reshape(2, ))
 
     theta = np.array(theta)
+    print("wrong4")
     mu_b = sigmoid(X, theta)
 
     preds = 0
@@ -132,6 +136,7 @@ def variational_inference_logistics(X: np.ndarray,
     epsilon = None
     mu_grad = None
     A_grad = None
+    print("task 8 starts")
 
     while counter < number_iterations:
         mu_old = mu
@@ -152,6 +157,7 @@ def variational_inference_logistics(X: np.ndarray,
         epsilon = onp.random.randn(num_samples_per_turn, P)
         print(epsilon.shape)
         print("ciao bellissimo")
+        print(mu.shape)
         mu_grad_ll_temp, A_grad_ll_temp = grad(expected_log_likelihood, argnums=(0, 1))(mu, A, epsilon, X, y)
         print("check 3")
         print(mu_grad_ll_temp.shape)
