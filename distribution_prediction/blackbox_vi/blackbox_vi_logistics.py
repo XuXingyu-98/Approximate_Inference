@@ -66,18 +66,11 @@ def expected_log_likelihood(mu: np.ndarray,
     """
     S = len(epsilon)
     N = X.shape[0]
-    mu = mu.reshape(X.shape[1], 1)
     theta = []
 
     for i in range(len(epsilon)):
+        print("iteration: ", i)
         theta_n = mu + A @ epsilon[i].reshape(2, 1)
-        print("wrong3")
-        print(mu.shape)
-        print(A.shape)
-        print("epsilon")
-        print(epsilon.shape)
-        print("theta_n")
-        print(theta_n)
         theta.append(theta_n.reshape(2, ))
 
     theta = np.array(theta)
@@ -130,6 +123,7 @@ def variational_inference_logistics(X: np.ndarray,
 
     counter = 0
     mu = np.zeros(shape=(1, P)) + 0.01
+    mu = mu.reshape(2, 1)
     A = np.identity(P)
 
     # Matrix used to make sure that the elements on the diagonal of A remain superior to 1e-5 at every step
