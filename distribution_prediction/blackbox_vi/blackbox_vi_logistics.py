@@ -70,7 +70,7 @@ def expected_log_likelihood(mu: np.ndarray,
     theta = []
 
     for i in range(len(epsilon)):
-        theta_n = mu + A @ epsilon[i].reshape(2, 1)
+        theta_n = mu + A.T @ epsilon[i].reshape(2, 1)
         theta.append(theta_n.reshape(2, ))
 
     theta = np.array(theta)
