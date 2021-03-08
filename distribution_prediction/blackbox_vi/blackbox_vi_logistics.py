@@ -69,11 +69,13 @@ def expected_log_likelihood(mu: np.ndarray,
     theta = []
 
     for i in range(len(epsilon)):
-        theta_n = mu + A @ epsilon[i].reshape(2, 1)
+        theta_n = mu.reshape(2, 1) + A @ epsilon[i].reshape(2, 1)
         print("wrong3")
         print(mu.shape)
         print(A.shape)
+        print("epsilon")
         print(epsilon.shape)
+        print("theta_n")
         print(theta_n)
         theta.append(theta_n.reshape(2, ))
 
