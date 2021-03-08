@@ -64,14 +64,29 @@ def expected_log_likelihood(mu: np.ndarray,
     N(mu, Sigma) by using the samples in epsilon.
     """
     S = len(epsilon)
+    N = X.shape[0]
+    theta = []
+    print(epsilon[0])
+    print(epsilon[0].T)
+    print(A)
 
     for i in range(len(epsilon)):
         theta_n = mu + A @ epsilon[i].T
         print(theta_n.shape)
         theta_n = mu + A @ epsilon[i]
         print(theta_n.shape)
-        break
-    return None
+        theta.append(theta.reshape(-1, 2))
+
+    mu_b = simoid(X, np.array(theta))
+    for i in range(len(mu_b)):
+        if y[i] == 0:
+            mu_b[i] = 1 - mu_b[i]
+
+    pred = np.sum(mu_b, axis=1)
+    pred /= S
+    pred = pred.reshape(N, )
+
+    return pred
     # TODO
 
 
