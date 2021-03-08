@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from scipy.stats import multivariate_normal
 
 from gaussian_process import GaussianProcess
 from kernels.gaussian_linear_kernel import GaussianLinearKernel
@@ -33,10 +34,7 @@ def get_log_upper_proba_distribution_gp(gaussian_process: GaussianProcess,
     c = theta[5]
     log_marginal_likelihood = gaussian_process.get_log_marginal_likelihood(log_amplitude_gaussian, log_length_scale, log_noise_scale, log_amplitude_linear, log_offset, c)
     log_prior = gaussian_process.get_log_prior_at(log_amplitude_gaussian, log_length_scale, log_noise_scale, log_amplitude_linear, log_offset, c)
-    print(log_marginal_likelihood)
-    print(log_prior)
-    p_1 = log_marginal_likelihood + log_prior
-    return p_1
+    return log_marginal_likelihood + log_prior
 
 
 
@@ -77,12 +75,27 @@ def metropolis_hastings_gaussian_process(gp: GaussianProcess,
     u = np.random.rand()  # Random number used for deciding if newly_sampled_theta should be accepted or not
 
     first_theta = np.zeros(number_hyperparameters_gaussian_process)
+    list_samples.append(first_theta)
 
     # -------------------------------------------------------------------------------------------------
 
     while len(list_samples) < number_expected_samples:
         #########################
         # TODO : Complete Here
+        u = np.random.rand()
+        newly_sampled_theta = np.random.multivariate_normal(mean=first_theta, cov=(sigma_exploration_mh ** 2) * np.eye(number_hyperparameters_gaussian_process));
+        q1 = multivariate_normal.pdf(first_theta, mean=newly_sampled_theta, cov=(sigma_exploration_mh ** 2) * np.eye(number_hyperparameters_gaussian_process))
+        q2 = multivariate_normal.pdf(newly_sampled_theta, mean=first_theta, cov=(sigma_exploration_mh ** 2) * np.eye(number_hyperparameters_gaussian_process))
+        p1 = np.exp(get_log_upper_proba_distribution_gp(gp, newly_sampled_theta))
+        p2 = np.exp(get_log_upper_proba_distribution_gp(gp, first_theta))
+        alpha = (q1 * p1) / (q2 * p2)
+
+        if alpha >= u:
+            first_theta = newly_sampled_theta
+            list_samples.append(first_theta)
+            is_sample_accepted = True
+        else:
+            is_sample_accepted = False
         #########################
 
         yield is_sample_accepted, np.array(list_samples), newly_sampled_theta, u
