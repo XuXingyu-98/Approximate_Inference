@@ -66,10 +66,11 @@ def expected_log_likelihood(mu: np.ndarray,
     """
     S = len(epsilon)
     N = X.shape[0]
+    mu = mu.reshape(X.shape[1], 1)
     theta = []
 
     for i in range(len(epsilon)):
-        theta_n = mu.reshape(2, 1) + A @ epsilon[i].reshape(2, 1)
+        theta_n = mu + A @ epsilon[i].reshape(2, 1)
         print("wrong3")
         print(mu.shape)
         print(A.shape)
@@ -147,33 +148,19 @@ def variational_inference_logistics(X: np.ndarray,
         #############################
         # TODO : Complete Here for computing epsilon, mu_grad and A_grad
         mu_grad_kl, A_grad_kl = grad(kl_div, argnums=(0, 1))(mu, A, sigma_prior)
-        print("check 1")
-        print(mu_grad_kl.shape)
-        print(A_grad_kl.shape)
 
         A_grad_ll = np.zeros_like(A)
         mu_grad_ll = np.zeros_like(mu)
-        print("check 2")
-        print(A_grad_ll.shape)
-        print(mu_grad_ll.shape)
 
         epsilon = onp.random.randn(num_samples_per_turn, P)
-        print(epsilon.shape)
-        print("ciao bellissimo")
-        print(mu.shape)
+
         mu_grad_ll_temp, A_grad_ll_temp = grad(expected_log_likelihood, argnums=(0, 1))(mu, A, epsilon, X, y)
-        print("check 3")
-        print(mu_grad_ll_temp.shape)
-        print(A_grad_ll_temp.shape)
         A_grad_ll += A_grad_ll_temp
-        print(4)
 
         mu_grad_ll += mu_grad_ll_temp
-        print(5)
 
         A_grad = -1 * A_grad_kl + A_grad_ll
         mu_grad = -1 * mu_grad_kl + mu_grad_ll
-        print(6)
         #############################
 
         # Performing a gradient descent step on A and mu
