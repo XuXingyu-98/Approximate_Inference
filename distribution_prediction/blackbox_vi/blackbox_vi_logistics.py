@@ -145,7 +145,7 @@ def variational_inference_logistics(X: np.ndarray,
         mu_grad_ll = np.zeros_like(mu)
 
         epsilon = onp.random.randn(num_samples_per_turn, P)
-        mu_grad_ll_temp, A_grad_ll_temp = grad(expected_log_marginal_likelihood, argnums=(0, 1))(mu, A, epsilon, X, y)
+        mu_grad_ll_temp, A_grad_ll_temp = grad(expected_log_likelihood, argnums=(0, 1))(mu, A, epsilon, X, y)
         A_grad_ll += A_grad_ll_temp
 
         mu_grad_ll += mu_grad_ll_temp
