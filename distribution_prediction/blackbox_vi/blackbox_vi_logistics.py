@@ -86,7 +86,7 @@ def expected_log_likelihood(mu: np.ndarray,
     print("sigmoid done")
 
     preds = 0
-
+    """""
     for i in range(N):
         for j in range(S):
             if y[i] == 1:
@@ -94,6 +94,19 @@ def expected_log_likelihood(mu: np.ndarray,
             else:
                 preds += np.log(1 - mu_b[i, j])
     print("preds done")
+    """""
+    idx = np.argwhere(y > 0)
+    for i in idx:
+        mu_n = mu_b[i, :]
+        mu_n = np.log(mu_n)
+        preds += np.sum(mu_n)
+
+    idx = np.argwhere(y == 0)
+    for i in idx:
+        ones = np.ones(S)
+        mu_n = ones - mu_b[i, :]
+        mu_n = np.log(mu_n)
+        preds += np.sum(mu_n)
 
     preds /= S
 
