@@ -122,7 +122,6 @@ def variational_inference_logistics(X: np.ndarray,
 
     counter = 0
     mu = np.zeros(shape=(1, P)) + 0.01
-    mu = mu.reshape(2, 1)
     A = np.identity(P)
 
     # Matrix used to make sure that the elements on the diagonal of A remain superior to 1e-5 at every step
@@ -137,10 +136,10 @@ def variational_inference_logistics(X: np.ndarray,
     while counter < number_iterations:
         mu_old = mu
         A_old = A
-
+        print(1)
         #############################
         # TODO : Complete Here for computing epsilon, mu_grad and A_grad
-        mu_grad_kl, A_grad_kl = grad(kl_div, argnums=(0, 1))(mu, A, sigma_prior)
+        mu_grad_kl, A_grad_kl = grad(kl_div, argnums=(0, 1))(mu.reshape(2, 1), A, sigma_prior)
 
         A_grad_ll = np.zeros_like(A)
         mu_grad_ll = np.zeros_like(mu)
