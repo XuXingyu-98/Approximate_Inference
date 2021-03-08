@@ -63,6 +63,13 @@ def expected_log_likelihood(mu: np.ndarray,
     :return: The expected log-likelihood. That expectation is calculated according to the approximated posterior
     N(mu, Sigma) by using the samples in epsilon.
     """
+    S = len(epsilon)
+    print(A)
+    print(epsilon)
+    theta = mu + A @ epsilon
+    print(theta.shape)
+    print(theta)
+    return None
     # TODO
 
 
