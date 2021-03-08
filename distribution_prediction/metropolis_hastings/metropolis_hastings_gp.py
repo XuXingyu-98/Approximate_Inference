@@ -33,8 +33,8 @@ def get_log_upper_proba_distribution_gp(gaussian_process: GaussianProcess,
     c = theta[5]
     log_marginal_likelihood = gaussian_process.get_log_marginal_likelihood(log_amplitude_gaussian, log_length_scale, log_noise_scale, log_amplitude_linear, log_offset, c)
     log_prior = gaussian_process.get_log_prior_at(log_amplitude_gaussian, log_length_scale, log_noise_scale, log_amplitude_linear, log_offset, c)
-    print(log_marginal_likelihood.shape)
-    print(log_prior.shape)
+    print(log_marginal_likelihood)
+    print(log_prior)
     p_1 = log_marginal_likelihood + log_prior
     return p_1
 
