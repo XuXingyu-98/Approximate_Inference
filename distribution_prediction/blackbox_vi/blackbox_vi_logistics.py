@@ -81,9 +81,9 @@ def expected_log_likelihood(mu: np.ndarray,
         mu_b = sigmoid(X, theta[i])
         for n in range(N):
             if y[n] == 1:
-                p_X += mu_b[n]
+                p_X += np.log(mu_b[n])
             else:
-                p_X += 1 - mu_b[n]
+                p_X += np.log(1 - mu_b[n])
         preds += p_X
 
     preds /= S
