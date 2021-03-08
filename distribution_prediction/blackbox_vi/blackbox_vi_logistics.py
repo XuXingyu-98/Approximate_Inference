@@ -79,11 +79,13 @@ def expected_log_likelihood(mu: np.ndarray,
     print(theta.shape)
 
     mu_b = sigmoid(X, theta)
+    print(mu_b.shape)
     for i in range(len(mu_b)):
         if y[i] == 0:
-            jax.ops.index_update(mu_b, i, 1-mu_b[i])
+            pred += 1 - mu_b[i]
+        else:
+            pred += mu_b[i]
 
-    pred = np.sum(mu_b, axis=1)
     pred /= S
     pred = pred.reshape(N, )
 
