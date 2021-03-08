@@ -1,4 +1,5 @@
 import jax.numpy as np
+import jax
 import numpy as onp
 from jax import grad
 import numpy as np
