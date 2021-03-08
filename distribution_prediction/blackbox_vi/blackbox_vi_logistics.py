@@ -66,6 +66,7 @@ def expected_log_likelihood(mu: np.ndarray,
     """
     S = len(epsilon)
     N = X.shape[0]
+    print(N)
     theta = []
 
     for i in range(len(epsilon)):
@@ -81,10 +82,13 @@ def expected_log_likelihood(mu: np.ndarray,
     mu_b = sigmoid(X, theta)
     print(mu_b.shape)
     for i in range(len(mu_b)):
-        if y[i] == 0:
-            preds[i] += 1 - mu_b[i]
-        else:
-            preds[i] += mu_b[i]
+        for j in range(S):
+            count = 0
+            if y[i] == 0:
+                count += 1 - mu_b[i, j]
+            else:
+                count += mu_b[i, j]
+        preds[i] = count
 
     preds /= S
 
