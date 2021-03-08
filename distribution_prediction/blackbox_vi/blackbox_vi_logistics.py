@@ -2,7 +2,6 @@ import jax.numpy as np
 import jax
 import numpy as onp
 from jax import grad
-import numpy as np
 
 from distribution_prediction.blackbox_vi.utils_plots import plot_vi_logistics
 
@@ -78,18 +77,18 @@ def expected_log_likelihood(mu: np.ndarray,
 
     print(theta.shape)
 
+    preds = np.zeros(N)
     mu_b = sigmoid(X, theta)
     print(mu_b.shape)
     for i in range(len(mu_b)):
         if y[i] == 0:
-            pred += 1 - mu_b[i]
+            preds[i] += 1 - mu_b[i]
         else:
-            pred += mu_b[i]
+            preds[i] += mu_b[i]
 
-    pred /= S
-    pred = pred.reshape(N, )
+    preds /= S
 
-    return pred
+    return preds
     # TODO
 
 
