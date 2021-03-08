@@ -83,14 +83,17 @@ def expected_log_likelihood(mu: np.ndarray,
     print(theta.shape)
 
     mu_b = sigmoid(X, theta)
+    print("sigmoid done")
 
     preds = 0
+
     for i in range(N):
         for j in range(S):
             if y[i] == 1:
                 preds += np.log(mu_b[i, j])
             else:
                 preds += np.log(1 - mu_b[i, j])
+    print("preds done")
 
     preds /= S
 
@@ -144,6 +147,7 @@ def variational_inference_logistics(X: np.ndarray,
     print("task 8 starts")
 
     while counter < number_iterations:
+        print(counter)
         mu_old = mu
         A_old = A
         #############################
