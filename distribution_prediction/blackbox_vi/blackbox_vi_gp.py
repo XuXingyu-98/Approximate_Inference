@@ -119,6 +119,28 @@ def expected_log_marginal_likelihood(mu: np.ndarray,
     N(mu, Sigma) by using the samples in epsilon.
     """
     # TODO
+    mu = mu.reshape(-1, 1)
+    y = y.reshape(-1, 1)
+
+    array_theta = (mu + A.dot(epsilon.T)).T
+
+    distances_array = get_distances_array(X, X)
+    result = 0
+
+    # print("array_theta", array_theta)
+    for index, theta in enumerate(array_theta):
+        amplitude_gaussian_squared = np.exp(theta[0] * 2)
+        length_scale = np.exp(theta[1])
+        noise_scale_squared = np.exp(theta[2] * 2)
+        amplitude_linear_squared = np.exp(theta[3] * 2)
+        offset_squared = np.exp(theta[4] * 2)
+        c = theta[5]
+
+        result += _get_log_marginal_likelihood_gp(amplitude_gaussian_squared, length_scale, noise_scale_squared,
+                                                  amplitude_linear_squared,
+                                                  offset_squared, c, X=X, y=y,
+                                                  distances_array=distances_array)
+    return result / epsilon.shape[0]
 
 
 def kl_div(mu: np.ndarray,
@@ -141,6 +163,14 @@ def kl_div(mu: np.ndarray,
     :return: the value of the KL divergence
     """
     # TODO
+    d = A_chol.shape[0]
+    x = -2 * np.log(np.prod(np.diagonal(A_chol))) + 2 * np.log(sigma_prior) * d - d
+
+    y = (np.linalg.norm(A_chol, ord='fro') ** 2) / (sigma_prior ** 2)
+
+    z = np.linalg.norm(mu, ord='fro') ** 2 / (sigma_prior ** 2)
+
+    return 0.5 * (x + y + z)
 
 
 def variational_inference_gp(X: np.ndarray,
@@ -197,6 +227,20 @@ def variational_inference_gp(X: np.ndarray,
 
         #############################
         # TODO : Complete Here for computing epsilon, mu_grad and A_grad
+        mu_grad_kl, A_grad_kl = grad(kl_div, argnums=(0, 1))(mu, A, sigma_prior)
+
+        A_grad_ll = np.zeros_like(A)
+        mu_grad_ll = np.zeros_like(mu)
+
+        epsilon = onp.random.randn(num_samples_per_turn, P)
+        mu_grad_ll_temp, A_grad_ll_temp = grad(expected_log_marginal_likelihood, argnums=(0, 1))(mu, A, epsilon, X, y)
+        A_grad_ll += A_grad_ll_temp
+
+        mu_grad_ll += mu_grad_ll_temp
+
+        A_grad = -1 * A_grad_kl + A_grad_ll
+        mu_grad = -1 * mu_grad_kl + mu_grad_ll
+
         #############################
 
         # Performing a gradient descent step on A and mu
