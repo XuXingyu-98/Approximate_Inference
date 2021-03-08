@@ -85,15 +85,13 @@ def expected_log_likelihood(mu: np.ndarray,
         for j in range(S):
             count = 0
             if y[i, 0] == 0:
-                print(1)
                 count += 1 - mu_b[i, j]
             else:
                 count += mu_b[i, j]
-                print(2)
-        print(3)
         preds[i] = count
-
+        
     preds /= S
+    print(preds.shape)
 
     return preds
     # TODO
