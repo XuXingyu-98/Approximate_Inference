@@ -36,6 +36,13 @@ def kl_div(mu: np.ndarray,
     :return: the value of the KL divergence
     """
     # TODO
+    d = A.shape[0]
+
+    x = -2 * np.log(np.prod(np.diagonal(A))) + 2 * np.log(sigma_prior) * d - d
+    y = (np.linalg.norm(A, ord='fro') ** 2) / (sigma_prior ** 2)
+    z = np.linalg.norm(mu, ord='fro') ** 2 / (sigma_prior ** 2)
+
+    return 0.5 * (x + y + z)
 
 
 def expected_log_likelihood(mu: np.ndarray,
