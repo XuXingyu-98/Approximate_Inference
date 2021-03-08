@@ -72,6 +72,8 @@ def expected_log_likelihood(mu: np.ndarray,
         theta.append(theta_n.reshape(-1, 2))
 
     theta = np.array(theta)
+
+    
     print(theta.shape)
 
     mu_b = sigmoid(X, theta)
