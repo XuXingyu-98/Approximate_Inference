@@ -70,24 +70,24 @@ def expected_log_likelihood(mu: np.ndarray,
     theta = []
 
     for i in range(len(epsilon)):
-        theta_n = mu + A.T @ epsilon[i].reshape(2, 1)
+        theta_n = mu + A @ epsilon[i].reshape(2, 1)
         theta.append(theta_n.reshape(2, ))
 
     theta = np.array(theta)
-    print(theta.shape)
 
     preds = 0
     for i in range(len(theta)):
-        sum = 0
+        p_X = 0
         mu_b = sigmoid(X, theta[i])
         for n in range(N):
             if y[n] == 1:
-                sum += mu_b[n]
+                p_X += mu_b[n]
             else:
-                sum += 1 - mu_b[n]
-        preds += sum
+                p_X += 1 - mu_b[n]
+        preds += p_X
 
     preds /= S
+    print(preds)
 
     return preds
     # TODO
