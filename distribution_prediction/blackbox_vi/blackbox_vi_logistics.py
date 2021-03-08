@@ -140,10 +140,8 @@ def variational_inference_logistics(X: np.ndarray,
 
         #############################
         # TODO : Complete Here for computing epsilon, mu_grad and A_grad
-        print(0)
         mu_grad_kl, A_grad_kl = grad(kl_div, argnums=(0, 1))(mu, A, sigma_prior)
-        print(1)
-
+        
         A_grad_ll = np.zeros_like(A)
         mu_grad_ll = np.zeros_like(mu)
         print(2)
