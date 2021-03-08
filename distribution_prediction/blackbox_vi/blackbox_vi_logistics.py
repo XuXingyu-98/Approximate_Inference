@@ -84,7 +84,7 @@ def expected_log_likelihood(mu: np.ndarray,
     for i in range(len(mu_b)):
         for j in range(S):
             count = 0
-            if y[i] == 0:
+            if y[i, 0] == 0:
                 count += 1 - mu_b[i, j]
             else:
                 count += mu_b[i, j]
