@@ -66,16 +66,15 @@ def expected_log_likelihood(mu: np.ndarray,
     S = len(epsilon)
     N = X.shape[0]
     theta = []
-    print(epsilon[0])
-    print(epsilon[0].reshape(2, 1))
-    print(A)
 
     for i in range(len(epsilon)):
         theta_n = mu + A @ epsilon[i].reshape(2, 1)
-        print(theta_n.shape)
         theta.append(theta_n.reshape(-1, 2))
 
-    mu_b = simoid(X, np.array(theta))
+    theta = np.array(theta)
+    print(theta.shape)
+
+    mu_b = sigmoid(X, theta)
     for i in range(len(mu_b)):
         if y[i] == 0:
             mu_b[i] = 1 - mu_b[i]
