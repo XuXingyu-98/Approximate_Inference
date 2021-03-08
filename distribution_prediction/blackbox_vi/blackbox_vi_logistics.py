@@ -66,14 +66,22 @@ def expected_log_likelihood(mu: np.ndarray,
     """
     S = len(epsilon)
     N = X.shape[0]
+    """""
     theta = []
-
+    
     for i in range(len(epsilon)):
         print("iteration: ", i)
         theta_n = mu + A @ epsilon[i].reshape(2, 1)
         theta.append(theta_n.reshape(2, ))
 
     theta = np.array(theta)
+    mu_b = sigmoid(X, theta)
+    """""
+    theta = A @ epsilon.T
+    theta = theta + mu
+    theta = theta.T
+    print(theta.shape)
+
     mu_b = sigmoid(X, theta)
 
     preds = 0
