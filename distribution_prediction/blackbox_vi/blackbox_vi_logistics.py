@@ -64,18 +64,10 @@ def expected_log_likelihood(mu: np.ndarray,
     N(mu, Sigma) by using the samples in epsilon.
     """
     S = len(epsilon)
-    """""
-    theta = []
-    
-    for i in range(len(epsilon)):
-        print("iteration: ", i)
-        theta_n = mu + A @ epsilon[i].reshape(2, 1)
-        theta.append(theta_n.reshape(2, ))
+    N = X.shape[0]
 
-    theta = np.array(theta)
-    mu_b = sigmoid(X, theta)
-    """""
     mu = mu.reshape(-1)
+    """""
     theta = mu + epsilon @ A.T
 
     mu_b = sigmoid(X, theta)
@@ -83,7 +75,18 @@ def expected_log_likelihood(mu: np.ndarray,
     probability = np.where(y, mu_b, 1 - mu_b)
 
     return np.log(probability).sum() / S
+    """""
     # TODO
+    theta = mu + epsilon @ A.T
+    mu_b = sigmoid(X, theta)
+    preds = 0
+    for i in range(N):
+        if y[i] == 1:
+            preds += np.sum(np.log(mu_b[i, :]))
+        else:
+            preds += np.sum(np.log(1 - mu_b[i, :]))
+    return preds / S
+
 
 
 def variational_inference_logistics(X: np.ndarray,
@@ -129,10 +132,8 @@ def variational_inference_logistics(X: np.ndarray,
     epsilon = None
     mu_grad = None
     A_grad = None
-    print("task 8 starts")
 
     while counter < number_iterations:
-        print(counter)
         mu_old = mu
         A_old = A
         #############################
@@ -145,9 +146,7 @@ def variational_inference_logistics(X: np.ndarray,
         epsilon = onp.random.randn(num_samples_per_turn, P)
 
         mu_grad_ll_temp, A_grad_ll_temp = grad(expected_log_likelihood, argnums=(0, 1))(mu, A, epsilon, X, y)
-        print("check3")
         A_grad_ll += A_grad_ll_temp
-        print("check4")
 
         mu_grad_ll += mu_grad_ll_temp
 
