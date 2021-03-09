@@ -75,7 +75,7 @@ def expected_log_likelihood(mu: np.ndarray,
     theta = np.array(theta)
     mu_b = sigmoid(X, theta)
     """""
-    theta = A @ epsilon.T + mu.reshape(2, 1)
+    theta = A @ epsilon.T + mu
 
     mu_b = sigmoid(X, theta.T)
 
@@ -118,8 +118,6 @@ def variational_inference_logistics(X: np.ndarray,
 
     counter = 0
     mu = np.zeros(shape=(1, P)) + 0.01
-    print(mu)
-    mu = mu.reshape(2, 1)
     A = np.identity(P)
 
     # Matrix used to make sure that the elements on the diagonal of A remain superior to 1e-5 at every step
