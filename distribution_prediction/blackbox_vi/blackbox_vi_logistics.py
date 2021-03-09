@@ -75,9 +75,10 @@ def expected_log_likelihood(mu: np.ndarray,
     theta = np.array(theta)
     mu_b = sigmoid(X, theta)
     """""
-    theta = A @ epsilon.T + mu
+    mu = mu.reshape(-1)
+    theta = mu + epsilon @ A.T
 
-    mu_b = sigmoid(X, theta.T)
+    mu_b = sigmoid(X, theta)
 
     probability = np.where(y, mu_b, 1 - mu_b)
 
