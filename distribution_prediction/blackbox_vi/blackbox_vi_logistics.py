@@ -145,7 +145,9 @@ def variational_inference_logistics(X: np.ndarray,
         epsilon = onp.random.randn(num_samples_per_turn, P)
 
         mu_grad_ll_temp, A_grad_ll_temp = grad(expected_log_likelihood, argnums=(0, 1))(mu, A, epsilon, X, y)
+        print("check3")
         A_grad_ll += A_grad_ll_temp
+        print("check4")
 
         mu_grad_ll += mu_grad_ll_temp
 
