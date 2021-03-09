@@ -1,5 +1,4 @@
 import jax.numpy as np
-import jax
 import numpy as onp
 from jax import grad
 
@@ -81,17 +80,8 @@ def expected_log_likelihood(mu: np.ndarray,
     mu_b = sigmoid(X, theta.T)
 
     probability = np.where(y, mu_b, 1 - mu_b)
-    """""
-    for i in range(N):
-        if y[i] == 1:
-            preds += np.sum(np.log(mu_b[i, :]))
-        else:
-            preds += np.sum(np.log(1 - mu_b[i, :]))
 
-    preds /= S
-    """""
-
-    return np.log(probability).sum / S
+    return np.log(probability).sum() / S
     # TODO
 
 
