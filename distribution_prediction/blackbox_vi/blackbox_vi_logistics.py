@@ -65,7 +65,6 @@ def expected_log_likelihood(mu: np.ndarray,
     N(mu, Sigma) by using the samples in epsilon.
     """
     S = len(epsilon)
-    N = X.shape[0]
     """""
     theta = []
     
@@ -81,8 +80,8 @@ def expected_log_likelihood(mu: np.ndarray,
 
     mu_b = sigmoid(X, theta.T)
 
-    preds = 0
-
+    probability = np.where(y, mu_b, 1 - mu_b)
+    """""
     for i in range(N):
         if y[i] == 1:
             preds += np.sum(np.log(mu_b[i, :]))
@@ -90,8 +89,9 @@ def expected_log_likelihood(mu: np.ndarray,
             preds += np.sum(np.log(1 - mu_b[i, :]))
 
     preds /= S
+    """""
 
-    return preds
+    return np.log(probability).sum / S
     # TODO
 
 
