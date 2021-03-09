@@ -84,11 +84,10 @@ def expected_log_likelihood(mu: np.ndarray,
     preds = 0
 
     for i in range(N):
-        for j in range(S):
-            if y[i] == 1:
-                preds += np.log(mu_b[i, j])
-            else:
-                preds += np.log(1 - mu_b[i, j])
+        if y[i] == 1:
+            preds += np.sum(np.log(mu_b[i, :]))
+        else:
+            preds += np.sum(np.log(1 - mu_b[i, :]))
 
     preds /= S
 
